@@ -1,0 +1,81 @@
+// LeetCode Valid Parentheses 
+// 스택
+var isValid = function(s) {
+    // {} [] () <-- 짝으로 이뤄지니까 무조건 길이가 짝수
+    if(s.length % 2 !== 0) return false;
+    
+    //괄호 짝
+    const pair = {
+        '{':'}',
+        '[':']',
+        '(':')'
+    };
+    
+    let stack = [];
+    
+    // 입력받은 string 길이 만큼 for문
+    for(let i=0; i< s.length; i++)
+    {
+        // 시작 괄호를 스택에 넣고
+        if(s[i] === '{' || s[i] === '[' || s[i] === '(' )
+        {
+            stack.push(s[i]);
+            //아래까지 갈필요 없음
+            continue;
+        }
+        
+        //짝 지어둔 괄호 값 키와 동일하다면?
+        if(pair[stack[stack.length - 1]] === s[i])
+         {
+             //다시 스택에서 꺼냄
+                stack.pop();
+             //그럼 다음으로
+             continue;
+         }
+        
+        //위 조건들 괄호 시작도 아니고 키값도 매칭 안된다면
+        return false;
+    }
+    
+    // 넣었다가 짝이 맞으면 다시 빼니까 스택은 0이여야함
+    return stack.length === 0;
+};
+
+// LeetCode Add Two Numbers
+// 연결리스트
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        
+        // ListNode 클래스 사용
+        
+        //헤더 설정
+        ListNode head = new ListNode(-1);
+        //움직일 노드
+        ListNode iterator = head;
+        //자리 올림 수
+        int carry = 0;
+        
+        while(l1 != null | l2 != null) {
+            
+            //null이 아니면 계산하도록
+            int val1 = l1 != null ? l1.val : 0;
+            int val2 = l2 != null ? l2.val : 0;
+            int sum = val1 + val2 + carry;
+            // 자스랑 똑같음
+            int currentDigit = sum % 10;
+        
+            carry = sum / 10;
+            
+            //계산할 값 넣어주고 앞으로 이동
+            iterator.next = new ListNode(currentDigit);
+            iterator = iterator.next;
+            
+            if (l1 != null) l1 = l1.next;
+            if (l2 != null) l2 = l2.next;
+        }
+        
+        if (carry != 0) iterator.next = new ListNode(carry);
+        
+        return head.next;
+    }
+}
