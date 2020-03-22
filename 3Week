@@ -1,0 +1,97 @@
+Unique Binary Search Trees
+
+class Solution {
+    public int numTrees(int n) {
+        int[] arr = new int[n+1];
+        
+        if(n == 0) return 1;
+        if(n == 1) return 1;
+        // 위 두개는 계산할 필요도 없음
+        
+        arr[0] = 1;
+        arr[1] = 1;
+        arr[2] = 2;
+        // 두개 인거까지 그냥 미리 계산
+        
+        //i부터 n까지 계산할 건데 루트가 1~N까지 번갈아가면서 가지수 계산
+        //1~2까지는 지정 되있으니 3부터 시작
+        for(int i = 3; i<=n; i++)
+        {
+            //root로 지정될 숫자들 1~n까지
+            for(int j = 1; j<=i; j++)
+            {
+                //트리의 왼쪽은 root보다 작아야하며 오른쪽은 root보다 커야함
+                arr[i] += arr[j-1]*arr[i-j];
+                
+                //arr[0] = 1
+                //1
+                //arr[1] = a[1-1]*arr[1-1] => a[1]*arr[1] = 1      
+                
+                //2
+                //arr[1] = a[1-1]*arr[1-1] => a[2] + a[0]*arr[0] = 1      => root가 1일 때 
+                //arr[2] = a[2-1]*arr[2-2] => a[2] + a[1]*arr[0] = 1      => root가 2일 때
+                
+                //3
+                //arr[1] = a[1-1]*arr[3-1] => a[3] + a[0]*arr[2] = 2
+                //arr[2] = a[2-1]*arr[3-2] => a[3] + a[1]*arr[1] = 3
+                //arr[3] = a[3-1]*arr[3-3] => a[3] + a[2]*arr[0] = 5
+                
+                //4
+                //arr[1] = a[1-1]*arr[4-1] => a[4] + a[0]*arr[3] = 5
+                //arr[2] = a[2-1]*arr[4-2] => a[4] + a[1]*arr[2] = 7
+                //arr[3] = a[3-1]*arr[4-3] => a[4] + a[2]*arr[1] = 9
+                //arr[4] = a[4-1]*arr[4-4] => a[4] + a[3]*arr[0] = 14
+            }
+        }
+        
+        return arr[n];
+        
+    }
+}
+
+Same Tree
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        
+        return compare(p,q);
+        
+    }
+    
+    public boolean compare(TreeNode p, TreeNode q)
+    {
+        // 노드가 둘다 null이면 끝
+        if(p == null && q == null) return true;
+        // 둘중 하나만 null이면 거짓
+        if((p == null && q != null) || (p != null && q == null))
+        {
+            return false;
+        }
+            
+        //현재 값이 똑같으면
+        if(p.val == q.val)
+        {
+            //그럼 다음 쪽 비교 
+            if(compare(p.left, q.left))
+            {
+                // 반대편 비교
+                if(compare(p.right, q.right))
+                {
+                    //끝나면 참
+                    return true;
+                }
+            }
+        }
+        // 중간에 하나라도 안맞으면 거짓
+           return false;    
+    }
+}
