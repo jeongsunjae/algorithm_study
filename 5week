@@ -1,0 +1,82 @@
+프로그래머스 가장 큰 수
+
+import java.util.Arrays;
+import java.util.Comparator;
+
+class Solution {
+    public String solution(int[] numbers) {
+        
+        
+        String answer = "";
+        
+         String[] arr = new String[numbers.length];
+        
+        for (int i = 0; i < numbers.length; i++) 
+        {
+            arr[i] = (String.valueOf(numbers[i]));
+        }
+        
+        Arrays.sort(arr, new Comparator<String>(){
+            @Override
+            
+            public int compare(String o1, String o2) {
+ 
+                String front = o1 + o2;
+                String back = o2 + o1;
+            
+                return back.compareTo(front);
+            }
+        });
+        
+        for(int i =0; i<arr.length; i++)
+        {
+            if(arr[0] == 0)
+            {
+                return "0";
+            }
+            answer += arr[i];
+        }
+        
+        return answer;
+    }
+}
+
+
+leetcode Squares of a Sorted Array (퀵정렬로 풀기)
+
+class Solution {
+    public int[] sortedSquares(int[] A) {
+        
+         for(int i=0; i<A.length; i++){
+            A[i]=(int)Math.pow(A[i], 2);
+        }
+        
+        quicksort(A, 0, A.length-1);
+        
+        
+        return A;
+        
+    }
+    
+    public void quicksort(int[] data , int l, int r)
+    {
+        int left = l;
+        int right = r;
+        int pivot = data[(l+r)/2];
+        do{
+            while(data[left] < pivot) left++;
+            while(data[right] > pivot) right--;
+            if(left <= right){    
+                int temp = data[left];
+                data[left] = data[right];
+                data[right] = temp;
+                left++;
+                right--;
+            }
+        }while (left <= right);
+        
+        if(l < right) quicksort(data, l, right);
+        if(r > left) quicksort(data, left, r);
+        
+    }
+}
